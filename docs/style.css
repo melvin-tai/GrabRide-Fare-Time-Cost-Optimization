@@ -7,13 +7,19 @@ body {
 
 h1, h2, h3, th {
   font-family: "Quantico", sans-serif;
-  color: #2ecc71;
+  letter-spacing: 0.4px;
 }
 
 .container {
   max-width: 900px;
   margin: 40px auto;
   padding: 0 20px;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 
 .card {
@@ -24,9 +30,46 @@ h1, h2, h3, th {
   box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
+label {
+  display: block;
+  margin-top: 14px;
+  font-size: 13px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+}
+
+button {
+  margin-top: 18px;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: #10b981;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.hidden {
+  display: none;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 14px;
 }
 
 thead {
@@ -34,55 +77,18 @@ thead {
 }
 
 th, td {
-  padding: 6px 10px;
+  padding: 10px;
   border: 1px solid #e5e7eb;
+  font-size: 13px;
   text-align: center;
-  vertical-align: middle;
 }
 
-td input,
-td select {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 4px 6px;
-  height: 28px;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+tbody tr {
+  background: #ffffff;
 }
 
 tbody tr:nth-child(even) {
   background: #f9fafb;
-}
-
-button {
-  font-family: "Jockey One", "Quantico", sans-serif;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  color: #fff;
-
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    background 0.18s ease;
-  margin-top: 12px;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(46, 204, 113, 0.35);
-}
-
-button:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 8px rgba(46, 204, 113, 0.25);
 }
 
 .result {
@@ -90,12 +96,4 @@ button:active {
   padding: 16px;
   border-radius: 8px;
   margin-top: 16px;
-}
-
-.hidden {
-  display: none;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
 }
