@@ -46,6 +46,7 @@ input, select {
 }
 
 button {
+  font-family: "Quantico", sans-serif;
   margin-top: 18px;
   padding: 12px;
   width: 100%;
