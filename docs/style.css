@@ -54,6 +54,20 @@ input, select {
   background: #ffffff;
 }
 
+input[type="date"] {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.form-group {
+  min-width: 0;
+}
+
 button,
 .btn {
   font-family: "Jockey One", "Quantico", sans-serif;
