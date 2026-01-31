@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Predict with Your Data</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+<div class="container">
+
+  <h1>Predict with Your Data</h1>
+  <p class="subtitle">
+    Enter your Grab ride history (past 7 days)
+  </p>
+
+  <section class="card">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Fare (RM)</th>
+          <th>Driver ETA</th>
+          <th>Distance (km)</th>
+          <th>Duration (min)</th>
+          <th>Route</th>
+          <th>Weather</th>
+          <th>iMap Dist</th>
+          <th>iMap Dur</th>
+          <th>Tolls</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button onclick="addRow()">Add Row</button>
+  </section>
+
+  <section class="card">
+    <h2>Prediction Input</h2>
+
+    <label>Date</label>
+    <select id="predictDate"></select>
+
+    <label>Time</label>
+    <select id="predictTime"></select>
+
+    <button onclick="predictFromUserData()">
+      Predict
+    </button>
+
+    <div id="userPrediction" class="result hidden">
+      <table>
+        <tbody id="userPredictionTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
