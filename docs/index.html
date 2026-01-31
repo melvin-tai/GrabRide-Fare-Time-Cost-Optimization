@@ -2,55 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Grab Fare Optimizer</title>
+  <title>GrabRide Fare Optimizer</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <div class="container">
+<div class="container">
 
-    <h1>Grab Fare Optimizer</h1>
-    <p class="subtitle">Cost-aware booking recommendations based on your data</p>
+  <h1>GrabRide Fare Optimizer</h1>
+  <p class="subtitle">
+    Cost-optimized booking recommendations using historical ride data
+  </p>
 
-    <section class="card">
-      <h2>Predict Your Best Booking Time</h2>
+  <section class="card">
+    <h2>Predict Best Booking Time</h2>
 
-      <label for="dateInput">Date</label>
-      <input type="date" id="dateInput" />
+    <label>Date</label>
+    <input type="date" id="dateInput">
 
-      <label for="timeSelect">Time</label>
-      <select id="timeSelect"></select>
+    <label>Time</label>
+    <select id="timeSelect"></select>
 
-      <button id="predictBtn">Predict</button>
+    <button id="predictBtn">Predict</button>
 
-      <div id="resultBox" class="result hidden">
-        <p><strong>Predicted Price:</strong> <span id="priceRM"></span></p>
-        <p><strong>Price Range:</strong> <span id="priceLabel"></span></p>
-        <p><strong>Suggestion:</strong> <span id="suggestion"></span></p>
+    <div id="resultBox" class="result hidden">
+      <p><strong>Predicted Price:</strong> <span id="priceRM"></span></p>
+      <p><strong>Price Range:</strong> <span id="priceLabel"></span></p>
+      <p><strong>Suggestion:</strong> <span id="suggestion"></span></p>
 
-        <button id="seeMoreBtn" class="secondary">See More Predictions</button>
-      </div>
-
-      <div id="moreInfo" class="hidden">
-        <table>
-          <tbody id="extraInfoTable"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Predict with Your Data</h2>
-      <p class="subtitle">
-        Enter your Grab ride history (past 7 days) to improve predictions
-      </p>
-
-      <button onclick="location.href='user-data.html'">
-        Go to User Data Input
+      <button id="seeMoreBtn" class="secondary">
+        See More Predictions
       </button>
-    </section>
+    </div>
 
-  </div>
+    <div id="moreInfo" class="hidden">
+      <table>
+        <tbody id="extraInfoTable"></tbody>
+      </table>
+    </div>
+  </section>
 
-  <script src="app.js"></script>
+  <section class="card">
+    <h2>Predict with Your Data</h2>
+    <p class="subtitle">
+      Use your own ride history to generate predictions
+    </p>
+    <button onclick="location.href='user-data.html'">
+      Go to User Data Input
+    </button>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
