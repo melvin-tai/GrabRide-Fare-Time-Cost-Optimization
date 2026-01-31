@@ -3,39 +3,37 @@ body {
   background: #f9fbfa;
   color: #1f2933;
   margin: 0;
-  padding: 0;
+}
+
+h1, h2, h3, th {
+  font-family: "Quantico", sans-serif;
+  letter-spacing: 0.4px;
 }
 
 .container {
-  max-width: 720px;
+  max-width: 900px;
   margin: 40px auto;
   padding: 0 20px;
-}
-
-h1 {
-  color: #0f766e;
-  margin-bottom: 5px;
 }
 
 .subtitle {
   color: #6b7280;
   font-size: 14px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .card {
-  background: white;
-  border-radius: 10px;
-  padding: 25px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
 label {
   display: block;
-  margin-top: 15px;
+  margin-top: 14px;
   font-size: 13px;
-  color: #374151;
 }
 
 input, select {
@@ -44,14 +42,15 @@ input, select {
   margin-top: 6px;
   border-radius: 6px;
   border: 1px solid #d1d5db;
+  background: #ffffff;
 }
 
 button {
-  margin-top: 20px;
+  margin-top: 18px;
   padding: 12px;
   width: 100%;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #10b981;
   color: white;
   font-weight: 600;
@@ -63,29 +62,40 @@ button.secondary {
   color: #065f46;
 }
 
-button:hover {
-  opacity: 0.9;
-}
-
-.result {
-  margin-top: 20px;
-  padding: 15px;
-  background: #ecfdf5;
-  border-radius: 6px;
-}
-
 .hidden {
   display: none;
 }
 
+/* ================= TABLE FIX ================= */
+
 table {
   width: 100%;
-  margin-top: 15px;
   border-collapse: collapse;
+  margin-top: 14px;
 }
 
-td {
-  padding: 8px;
-  border-bottom: 1px solid #e5e7eb;
+thead {
+  background: #f0fdfa;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #e5e7eb;
   font-size: 13px;
+  text-align: center;
+}
+
+tbody tr {
+  background: #ffffff;
+}
+
+tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.result {
+  background: #ecfdf5;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 16px;
 }
