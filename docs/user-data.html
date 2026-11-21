@@ -2,65 +2,166 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Predict with Your Data</title>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Rides – GrabRide Fare Optimizer</title>
+  <meta name="description" content="Log the GrabRide fares you've seen and get a booking-time forecast built from your own rides, in your browser." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
-<div class="container">
+<body data-page="rides">
+<a class="skip" href="#main">Skip to your ride log</a>
 
-  <h1>Predict with Your Data</h1>
-  <p class="subtitle">
-    Enter your GrabRide History
-  </p>
-
-  <section class="card">
-    <table id="dataTable">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Fare (RM)</th>
-          <th>Driver ETA</th>
-          <th>Distance (km)</th>
-          <th>Duration (min)</th>
-          <th>Route</th>
-          <th>Weather</th>
-          <th>iMap Dist</th>
-          <th>iMap Dur</th>
-          <th>Tolls</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <button onclick="addRow()">Add Row</button>
-  </section>
-
-  <section class="card">
-    <h2>Prediction Input</h2>
-
-    <label>Date</label>
-    <select id="predictDate"></select>
-
-    <label>Time</label>
-    <select id="predictTime"></select>
-
-    <button onclick="predictFromUserData()">
-      Predict
-    </button>
-
-    <div id="userPrediction" class="result hidden">
-      <table>
-        <tbody id="userPredictionTable"></tbody>
-      </table>
-    </div>
-  </section>
-
+<div class="site-bar">
+  <header class="site-header wrap">
+    <a class="brand" href="index.html">GrabRide Fare Optimizer</a>
+    <nav class="site-nav" aria-label="Main">
+      <div class="tabs">
+        <a href="index.html">Forecast</a>
+        <a href="user-data.html" aria-current="page">Your Rides</a>
+      </div>
+      <div class="ext-links">
+        <a href="https://github.com/melvin-tai/GrabRide-Fare-Time-Cost-Optimization/tree/main/notebooks">Notebook<span class="visually-hidden"> (on GitHub)</span><svg class="ext-icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="https://github.com/melvin-tai/GrabRide-Fare-Time-Cost-Optimization/blob/main/data/GrabRide_Data.csv">Data<span class="visually-hidden"> (on GitHub)</span><svg class="ext-icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </nav>
+  </header>
 </div>
+
+<main id="main" class="wrap">
+
+  <section class="intro">
+    <h1>Predict With Your Own Rides</h1>
+    <p class="lede">Log the fares you've checked between 6:30am and 8:00am. The forecast updates as you type. Your rides are saved in this browser and never uploaded.</p>
+  </section>
+
+  <section aria-labelledby="log-title">
+    <div class="log-head">
+      <div>
+        <h2 id="log-title">Ride Log</h2>
+        <p>Only date, time and fare are needed. The other columns match the dataset, so an export can be used to retrain the model.</p>
+      </div>
+      <div class="toolbar">
+        <button class="button" type="button" id="addRide">Add Ride</button>
+        <button class="button quiet" type="button" id="importBtn">Import CSV</button>
+        <button class="button quiet" type="button" id="exportBtn">Export CSV</button>
+        <input type="file" id="importFile" accept=".csv,text/csv" hidden />
+      </div>
+    </div>
+
+    <div class="table-scroll" id="tableWrap">
+      <table class="ride-table" id="rideTable">
+        <colgroup>
+          <col style="width:158px"><col style="width:146px"><col style="width:96px">
+          <col style="width:84px"><col style="width:84px"><col style="width:84px">
+          <col style="width:130px"><col style="width:120px"><col style="width:96px">
+          <col style="width:96px"><col style="width:112px"><col style="width:88px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col" class="req">Date</th>
+            <th scope="col" class="req">Time</th>
+            <th scope="col" class="req">Fare <small>RM</small></th>
+            <th scope="col">Driver Arrives <small>min</small></th>
+            <th scope="col">Distance <small>km</small></th>
+            <th scope="col">Duration <small>min</small></th>
+            <th scope="col">Fastest Route</th>
+            <th scope="col">Weather</th>
+            <th scope="col">Nav Distance <small>km</small></th>
+            <th scope="col">Nav Duration <small>min</small></th>
+            <th scope="col">Tolls</th>
+            <th scope="col"><span class="visually-hidden">Remove</span></th>
+          </tr>
+        </thead>
+        <tbody id="rideBody"></tbody>
+      </table>
+      <div class="empty" id="emptyState" hidden>
+        <strong>No Rides Logged Yet</strong>
+        Add a ride, import a CSV in the dataset's format, or start with some example rides.
+        <br />
+        <button class="button quiet" type="button" id="loadExample">Load 5 Example Rides</button>
+      </div>
+    </div>
+
+    <div class="log-foot">
+      <p class="status" id="status" role="status"></p>
+      <button class="button quiet danger" type="button" id="clearBtn" hidden>Clear All Rides</button>
+    </div>
+
+    <datalist id="routeList">
+      <option value="LSA_E5"></option>
+      <option value="LBP_E10"></option>
+      <option value="LP_Route_2"></option>
+    </datalist>
+  </section>
+
+  <section class="section panel" aria-labelledby="planner-title">
+    <h2 id="planner-title">Your Forecast</h2>
+
+    <form class="controls" id="controls" onsubmit="return false">
+      <div class="field">
+        <label for="daySelect">Day</label>
+        <select class="control" id="daySelect">
+          <option value="any">Any day</option>
+          <option value="1">Monday</option>
+          <option value="2">Tuesday</option>
+          <option value="3">Wednesday</option>
+          <option value="4">Thursday</option>
+          <option value="5">Friday</option>
+          <option value="6">Saturday</option>
+          <option value="0">Sunday</option>
+        </select>
+        <span class="hint">Rides on this day count more.</span>
+      </div>
+      <div class="field">
+        <label for="weatherSelect">Weather</label>
+        <select class="control" id="weatherSelect">
+          <option value="any">Any weather</option>
+          <option value="Clear">Clear</option>
+          <option value="Rainy">Rainy</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="timeSelect">Ready to leave at</label>
+        <select class="control" id="timeSelect"></select>
+      </div>
+    </form>
+
+    <div class="answer" id="answer" aria-live="polite">
+      <p class="answer-head"><span id="answerKicker">Book at</span> <span class="answer-time" id="answerTime">--:--</span></p>
+      <div class="answer-fare" id="answerFare"></div>
+      <p class="answer-note" id="answerNote"></p>
+      <p class="answer-note" id="answerCaveat"></p>
+    </div>
+
+    <figure class="timeline" id="timeline" aria-describedby="sourceNote"></figure>
+
+    <p class="source-note" id="sourceNote"></p>
+
+    <details class="disclosure">
+      <summary>Every 5-Minute Slot</summary>
+      <table class="data-table" id="slotTable"></table>
+    </details>
+  </section>
+
+  <section class="section" aria-labelledby="method-title">
+    <h2 id="method-title">How This Forecast Works</h2>
+    <p>Each 5-minute slot is a weighted average of your logged fares. Rides logged closer to that time count more, and so do rides on the day you picked. Slots with no ride within about 25 minutes are left blank instead of guessed.</p>
+    <p>Cheap, average and pricey are split by thirds of your own fares. For the model trained on the full dataset, see the <a href="index.html">forecast page</a>.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer wrap">
+  <p>A project by Melvin Tai. Forecasts are estimates, not quotes.</p>
+  <p>Code, data and notebook on <a href="https://github.com/melvin-tai/GrabRide-Fare-Time-Cost-Optimization">GitHub</a>.</p>
+</footer>
 
 <script src="app.js"></script>
 </body>

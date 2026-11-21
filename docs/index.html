@@ -2,60 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GrabRide Fare Optimizer</title>
+  <meta name="description" content="Find the cheapest time to book a GrabRide from Monash University Malaysia to KL Sentral between 6:30am and 8:00am." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
-<div class="container">
+<body data-page="forecast">
+<a class="skip" href="#main">Skip to the forecast</a>
 
-  <h1>GrabRide Fare Optimizer</h1>
-  <p class="subtitle">
-    Cost-optimized booking recommendations using historical ride data
-  </p>
-
-  <section class="card">
-    <h2>Predict Best Booking Time</h2>
-
-    <label>Date</label>
-    <input type="date" id="dateInput">
-
-    <label>Time</label>
-    <select id="timeSelect"></select>
-
-    <button id="predictBtn">Predict</button>
-
-    <div id="resultBox" class="result hidden">
-      <p><strong>Predicted Price:</strong> <span id="priceRM"></span></p>
-      <p><strong>Price Range:</strong> <span id="priceLabel"></span></p>
-      <p><strong>Suggestion:</strong> <span id="suggestion"></span></p>
-
-      <button id="seeMoreBtn" class="secondary">
-        See More Predictions
-      </button>
-    </div>
-
-    <div id="moreInfo" class="hidden">
-      <table>
-        <tbody id="extraInfoTable"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <section class="card">
-    <h2>Predict with Your Data</h2>
-    <p class="subtitle">
-      Use your own ride history to generate predictions
-    </p>
-    <button onclick="location.href='user-data.html'">
-      Go to User Data Input
-    </button>
-  </section>
-
+<div class="site-bar">
+  <header class="site-header wrap">
+    <a class="brand" href="index.html">GrabRide Fare Optimizer</a>
+    <nav class="site-nav" aria-label="Main">
+      <div class="tabs">
+        <a href="index.html" aria-current="page">Forecast</a>
+        <a href="user-data.html">Your Rides</a>
+      </div>
+      <div class="ext-links">
+        <a href="https://github.com/melvin-tai/GrabRide-Fare-Time-Cost-Optimization/tree/main/notebooks">Notebook<span class="visually-hidden"> (on GitHub)</span><svg class="ext-icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="https://github.com/melvin-tai/GrabRide-Fare-Time-Cost-Optimization/blob/main/data/GrabRide_Data.csv">Data<span class="visually-hidden"> (on GitHub)</span><svg class="ext-icon" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5h5v5M9.5 2.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </nav>
+  </header>
 </div>
+
+<main id="main" class="wrap">
+
+  <section class="intro">
+    <h1>When To Book Your Morning Ride</h1>
+    <p class="lede">GrabRide fares from Monash University Malaysia to KL Sentral, between 6:30am and 8:00am. Choose when you're ready to leave to see the cheapest time to book from then on.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="planner-title">
+    <h2 id="planner-title" class="visually-hidden">Plan A Booking</h2>
+
+    <form class="controls" id="controls" onsubmit="return false">
+      <div class="field">
+        <label for="dateInput">Date</label>
+        <input class="control" type="date" id="dateInput" />
+      </div>
+      <div class="field">
+        <label for="timeSelect">Ready to leave at</label>
+        <select class="control" id="timeSelect"></select>
+      </div>
+    </form>
+
+    <div class="answer" id="answer" aria-live="polite">
+      <p class="answer-head"><span id="answerKicker">Book at</span> <span class="answer-time" id="answerTime">--:--</span></p>
+      <div class="answer-fare" id="answerFare"></div>
+      <p class="answer-note" id="answerNote"></p>
+      <p class="answer-note" id="answerCaveat"></p>
+    </div>
+
+    <figure class="timeline" id="timeline" aria-describedby="sourceNote"></figure>
+
+    <p class="source-note" id="sourceNote"></p>
+
+    <details class="disclosure">
+      <summary>Every 5-Minute Slot</summary>
+      <table class="data-table" id="slotTable"></table>
+    </details>
+  </section>
+
+  <div class="columns">
+    <section aria-labelledby="assume-title">
+      <h2 id="assume-title">What The Forecast Assumes</h2>
+      <p>Only the time and the day of the week change. Everything else is held at its median from the dataset:</p>
+      <dl class="facts">
+        <dt>Distance</dt><dd>21.5 km</dd>
+        <dt>Trip duration</dt><dd>24 min</dd>
+        <dt>Driver arrives in</dt><dd>7 min</dd>
+        <dt>Fastest route</dt><dd>LSA_E5 (Shah Alam Expressway)</dd>
+        <dt>Weather</dt><dd>Clear</dd>
+        <dt>Navigation estimate</dt><dd>19 km, 33 min</dd>
+        <dt>Tolls</dt><dd>No</dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="data-title" class="figures">
+      <h2 id="data-title">Where The Numbers Come From</h2>
+      <p>Fares were recorded every 5 minutes over <strong>8 weekday mornings</strong>, from 24 November to 3 December 2025, for <strong>143 fares</strong> in total. They ranged from <strong>RM 21 to RM 70</strong>.</p>
+      <p>A random forest model was trained on 80% of them. On the other 20%, its predictions were off by <strong>RM 6.32</strong> on average.</p>
+      <p>Rain made a big difference: rainy mornings averaged <strong>RM 52.46</strong>, clear ones <strong>RM 31.06</strong>. The forecast above assumes clear weather.</p>
+    </section>
+  </div>
+  <section class="section" aria-labelledby="own-title">
+    <h2 id="own-title">Predict With Your Own Rides</h2>
+    <p>If you've been checking fares yourself, log them and get a forecast built only from your rides. It runs in your browser and nothing is uploaded.</p>
+    <p><a class="button quiet" href="user-data.html">Open Your Rides</a></p>
+  </section>
+
+</main>
+
+<footer class="site-footer wrap">
+  <p>A project by Melvin Tai. Forecasts are estimates, not quotes.</p>
+  <p>Code, data and notebook on <a href="https://github.com/melvin-tai/GrabRide-Fare-Time-Cost-Optimization">GitHub</a>.</p>
+</footer>
 
 <script src="app.js"></script>
 </body>

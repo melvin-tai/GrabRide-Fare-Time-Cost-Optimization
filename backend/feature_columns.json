@@ -1,1 +1,13 @@
-
+[
+  "minute_of_the_day",
+  "day_of_the_week",
+  "driver_est_min",
+  "distance_km",
+  "duration_min",
+  "imap_distance_km",
+  "imap_duration_min",
+  "tolls_true_false",
+  "fastest_route_LP_Route_2",
+  "fastest_route_LSA_E5",
+  "weather_Rainy"
+]
